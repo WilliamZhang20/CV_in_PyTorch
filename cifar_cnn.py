@@ -50,7 +50,7 @@ net = Net()
 import torch.optim as optim
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=0.0001, momentum=0.9)
+optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 
 for epoch in range(2):
@@ -71,7 +71,7 @@ for epoch in range(2):
 
         running_loss += loss.item()
         if i % 20 == 19:
-            print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
+            print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 20:.3f}')
             running_loss = 0.0
 
 PATH = './cifar_net.pth'

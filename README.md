@@ -8,4 +8,8 @@ Contents:
 - `resNet.py` where I learned to train a [Residual](https://arxiv.org/pdf/1512.03385) Network (ResNet) to classify images from the CIFAR-100 datset. The ResNet architecture uses feedforward connections between layers to retain information, especially learned features. This makes learning faster and more reliable, and also allows for much deeper networks without the shortfalls of regular deep neural nets.
     - Like the one in this repository, ResNets contain many convolutional layers that extract various features of the images. 
     - From my own experiments, the ResNet took much longer to train on my CPU than a GPU. So I just simply went to Google Colab, pasted my code, and it ran much faster.
-    - However, so far the network has only reached an accuracy of 51.9 % after 30 epochs (taking 43 minutes). Some more work, such as optimizing the SGD, should tune it up. 
+    - At first, the network has only reached an accuracy of 51.9 % after 30 epochs (taking 43 minutes). 
+    - By changing the optimizer to Adam, the accuracy after 30 epochs taking the same time was 96.15%. 
+
+Upcoming:
+- An autoencoder

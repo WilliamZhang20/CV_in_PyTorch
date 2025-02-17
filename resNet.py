@@ -21,12 +21,12 @@ train = torchvision.datasets.CIFAR100(root='./data',train=True,download=True,tra
 
 test = torchvision.datasets.CIFAR100(root='./data',train=False,download=True,transform=transform)
 
-trainloader = DataLoader(train, batch_size=32, shuffle=True, num_workers=2)
+trainloader = DataLoader(train, batch_size=64, shuffle=True, num_workers=2)
 
-testloader = DataLoader(test, batch_size=32, shuffle=False, num_workers=2)
+testloader = DataLoader(test, batch_size=64, shuffle=False, num_workers=2)
 
 class ResBlock(nn.Module):
-    def __init__(self, in_channels, out_channels, stride=1):
+    def __init__(self, in_channels, out_channels, stride=1, dropout_prob=0.2):
         super(ResBlock, self).__init__()
         self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(out_channels)
@@ -97,7 +97,8 @@ model = ResNet(ResBlock, num_blocks=[3, 4, 6, 3], num_classes=100)
 model = model.to(device)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=0.002)
+scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.6)
 
 def train(model, trainloader, criterion, optimizer, num_epochs=30):
     for epoch in range(num_epochs):
@@ -125,6 +126,9 @@ def train(model, trainloader, criterion, optimizer, num_epochs=30):
         epoch_loss = running_loss / len(trainloader)
         accuracy = 100 * correct / total
         print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss:.4f}, Accuracy: {accuracy:.2f}%')
+
+        # move the scheduler to step the learning rate
+        scheduler.step()
 
 # Train the model
 train(model, trainloader, criterion, optimizer, num_epochs=30)
